@@ -21,10 +21,6 @@ class AccomodationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = AccomodationSerializer
 
-    def list(self, request):
-        print(request.user)
-        return super().list(request)
-
     def create(self, request):
         print(request.user.id)
         print(request.data)

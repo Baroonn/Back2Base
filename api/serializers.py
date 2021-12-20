@@ -21,22 +21,6 @@ class AccomodationSerializer(serializers.ModelSerializer):
     images = AccomodationImagesSerializer(many=True, required=False)
     reviews = ReviewSerializer(many=True, required=False)
 
-    # def create(self, validated_data):
-    #     token = TokenObtainPairSerializer.get_token()
-    #     accomodation = Accomodation(
-    #         category = validated_data['category'],
-    #         description = validated_data['description'],
-    #         location = validated_data['location'],
-    #         price = validated_data['price'],
-    #         duration = validated_data['duration'],
-    #         status = validated_data['status'],
-    #         lga = validated_data['lga'],
-    #         agent = token['user_id']
-    #     )
-
-    #     accomodation.save()
-    #     return accomodation
-
     class Meta:
         model = Accomodation
         fields = '__all__'
