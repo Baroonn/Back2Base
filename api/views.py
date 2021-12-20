@@ -3,6 +3,8 @@ from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 
 User = get_user_model()
 
@@ -12,8 +14,25 @@ from reviews.models import Review
 from .serializers import AccomodationImagesSerializer, AccomodationSerializer, ReviewSerializer, UserSerializer
 
 # Create your views here.
+
+
+
 class AccomodationViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = AccomodationSerializer
+
+    def list(self, request):
+        print(request.user)
+        return super().list(request)
+
+    def create(self, request):
+        print(request.user.id)
+        print(request.data)
+        request.data._mutable=True
+        request.data['agent'] = request.user.id
+        request.data._mutable=False
+        
+        return super().create(request)
 
     def get_queryset(self):
         queryset = Accomodation.objects.all()

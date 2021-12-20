@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 from accomodation.models import Accomodation, AccomodationImages
 from reviews.models import Review
 
-from users.models import CustomUser
-
 User = get_user_model()
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -23,9 +21,27 @@ class AccomodationSerializer(serializers.ModelSerializer):
     images = AccomodationImagesSerializer(many=True, required=False)
     reviews = ReviewSerializer(many=True, required=False)
 
+    # def create(self, validated_data):
+    #     token = TokenObtainPairSerializer.get_token()
+    #     accomodation = Accomodation(
+    #         category = validated_data['category'],
+    #         description = validated_data['description'],
+    #         location = validated_data['location'],
+    #         price = validated_data['price'],
+    #         duration = validated_data['duration'],
+    #         status = validated_data['status'],
+    #         lga = validated_data['lga'],
+    #         agent = token['user_id']
+    #     )
+
+    #     accomodation.save()
+    #     return accomodation
+
     class Meta:
         model = Accomodation
         fields = '__all__'
+        extra_kwargs = {'agent': {'read_only':True}}
+
 
 class UserSerializer(serializers.ModelSerializer):
     listings = AccomodationSerializer(many=True, required=False)
