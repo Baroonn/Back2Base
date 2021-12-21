@@ -1,10 +1,9 @@
 from django.shortcuts import get_object_or_404, render
-from rest_framework import viewsets, generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework import viewsets, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 User = get_user_model()
 
@@ -65,6 +64,7 @@ class UserCreate(generics.CreateAPIView):
 class UserRetrieve(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 class RateAgent(APIView):
     def get(self, request, pk, rate_pk):
