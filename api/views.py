@@ -4,6 +4,7 @@ from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .permissions import IsOwnerOrReadOnly
 
 User = get_user_model()
 
@@ -17,7 +18,7 @@ from .serializers import AccomodationImagesSerializer, AccomodationSerializer, R
 
 
 class AccomodationViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     serializer_class = AccomodationSerializer
 
     def create(self, request):
@@ -71,7 +72,6 @@ class RateAgent(APIView):
         if not 0<=rate_pk<=5:
             return Response({'detail':'rate not valid'})
         agent = get_object_or_404(User, pk=pk)
-        total_rating = agent.total_rating
         no_of_rating = agent.no_of_rating
         if agent.no_of_rating == 0:
             agent.rating = rate_pk
