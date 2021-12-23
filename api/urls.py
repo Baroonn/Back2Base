@@ -1,6 +1,6 @@
 from django.urls import path, re_path, include
 from rest_framework.routers import DefaultRouter
-from .views import AccomodationImagesCreate, AccomodationImagesDelete, AccomodationViewSet, RateAgent, ReviewCreate, UserCreate, UserRetrieve
+from .views import AccomodationImagesCreate, AccomodationImagesDelete, AccomodationViewSet, RateAgent, ReviewCreate, UserListCreate, UserRetrieve
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -35,7 +35,8 @@ urlpatterns = [
     path('accomodationimages/', AccomodationImagesCreate.as_view(), name="images"),
     path('accomodationimages/<str:pk>/', AccomodationImagesDelete.as_view(), name="images_delete"),
     path('reviews/', ReviewCreate.as_view(), name='reviews'),
-    path('agents/', UserCreate.as_view(), name='agent_create'),
+    path('agents/', UserListCreate.as_view(), name='agent_create'),
+    # path('agents/view/', UserList.as_view(), name='user_list'),
     path('agents/<int:pk>/', UserRetrieve.as_view(), name='agent_retrieve'),
     path('agents/<int:pk>/rate/<int:rate_pk>/', RateAgent.as_view(), name='rate_agent'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets, generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsAdminOrCreateOnly, IsAgentOrReadOnly, IsOwnerOrReadOnly
 
 User = get_user_model()
 
@@ -59,13 +59,15 @@ class ReviewCreate(generics.CreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-class UserCreate(generics.CreateAPIView):
+class UserListCreate(generics.ListCreateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-
+    permission_classes = (IsAdminOrCreateOnly,)
+    
 class UserRetrieve(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAgentOrReadOnly,)
 
 class RateAgent(APIView):
     def get(self, request, pk, rate_pk):
